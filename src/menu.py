@@ -90,3 +90,37 @@ def select_target_menu(screen):
 
         pygame.display.flip()
         clock.tick(60)
+
+def confirm_exit(screen):
+    font = get_font(36)
+    small_font = get_font(28)
+    clock = pygame.time.Clock()
+    dialog_running = True
+
+    width, height = screen.get_size()
+    overlay = pygame.Surface((width, height), pygame.SRCALPHA)
+    overlay.fill((0, 0, 0, 180))
+
+    while dialog_running:
+        screen.blit(overlay, (0, 0))
+
+        prompt = font.render("Are you sure you want to end this session?", True, (255, 255, 255))
+        yes_text = small_font.render("Yes (Y)", True, (255, 255, 255))
+        no_text = small_font.render("No (N)", True, (255, 255, 255))
+
+        screen.blit(prompt, (width // 2 - prompt.get_width() // 2, height // 2 - 60))
+        screen.blit(yes_text, (width // 2 - 100, height // 2 + 10))
+        screen.blit(no_text, (width // 2 + 50, height // 2 + 10))
+
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_y:
+                    return True
+                elif event.key == pygame.K_n or event.key == pygame.K_ESCAPE:
+                    return False
+            if event.type == pygame.QUIT:
+                return True
+
+        clock.tick(30)
